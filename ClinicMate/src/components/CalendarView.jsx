@@ -5,7 +5,7 @@ import AppointmentForm from './AppointmentForm'
 import DatePickerMobile from './DatePickerMobile'
 import AppointmentList from './AppointmentList'
 import DarkModeToggle from './DarkModeToggle'
-import { setDoctorFilter, setPatientFilter, clearFilters } from '../features/filterSlice'
+import { setDoctorFilter, setPatientFilter, clearFilter } from '../features/filterSlice'
 import data from '../assets/data.json'
 
 function CalendarView() {
@@ -105,7 +105,7 @@ function CalendarView() {
           </select>
           <button
             className="p-2 bg-blue-500 text-white rounded"
-            onClick={() => dispatch(clearFilters())}
+            onClick={() => dispatch(clearFilter())}
           >
             Clear Filters
           </button>
