@@ -1,0 +1,12 @@
+{
+  "patients": [
+    { "id": "1", "name": "John Doe" },
+    { "id": "2", "name": "Jane Smith" },
+    { "id": "3", "name": "Alice Johnson" }
+  ],
+  "doctors": [
+    { "id": "1", "name": "Dr. Brown" },
+    { "id": "2", "name": "Dr. Green" },
+    { "id": "3", "name": "Dr. White" }
+  ]
+}
