@@ -33,5 +33,5 @@ const appointementSlice = createSlice({
     },
 })
 
-export const { addAppointment, updateAppointment, deleteAppointment } = appointementSlice.actions
-export default appointementSlice.reducer
+export const { addAppointment, updateAppointment, deleteAppointment } = appointementSlice.actions;
+export default appointementSlice.reducer;
