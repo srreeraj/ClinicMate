@@ -3,9 +3,7 @@ import { useSelector } from 'react-redux'
 import LoginPage from './components/LoginPage'
 import CalendarView from './components/CalendarView'
 
-import React from 'react'
-
-const App = () => {
+function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const isDarkMode = useSelector((state) => state.darkMode.isDarkMode)
 
@@ -15,11 +13,15 @@ const App = () => {
         <div className="container mx-auto p-4">
           <Routes>
             <Route
-              path="/login"
-              element={isAuthenticated ? <Navigate to="/" /> : <LoginPage />}
+              path="/"
+              element={isAuthenticated ? <Navigate to="/calendar" /> : <LoginPage />}
             />
             <Route
-              path="/"
+              path="/login"
+              element={isAuthenticated ? <Navigate to="/calendar" /> : <LoginPage />}
+            />
+            <Route
+              path="/calendar"
               element={isAuthenticated ? <CalendarView /> : <Navigate to="/login" />}
             />
           </Routes>
