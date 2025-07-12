@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import LoginPage from './components/LoginPage'
 import CalendarView from './components/CalendarView'
+import Navbar from './components/Nabar'
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
@@ -9,6 +10,7 @@ function App() {
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
+      <Navbar/>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
         <div className="container mx-auto p-4">
           <Routes>
