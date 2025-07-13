@@ -24,7 +24,7 @@ const LoginPage = () => {
   
   return (
     <Box sx={{ 
-      minHeight: '100vh', 
+      minHeight: '90vh', 
       background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
       display: 'flex',
       alignItems: 'center',
@@ -157,7 +157,7 @@ const LoginPage = () => {
           <Box sx={{ 
             flex: 1, 
             bgcolor: '#4a90e2',
-            background: 'linear-gradient(135deg, #4a90e2 0%, #357abd 100%)',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             p: { xs: 3, md: 6 },
             display: 'flex',
             flexDirection: 'column',
