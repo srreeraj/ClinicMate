@@ -12,7 +12,7 @@ function CalendarView() {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editAppointment, setEditAppointment] = useState(null)
-  const appointments = useSelector((state) => state.appointments.appointments)
+  const appointments = useSelector((state) => state.appointments?.appointments || [])
   const { doctor, patient } = useSelector((state) => state.filters)
   const dispatch = useDispatch()
 
@@ -69,7 +69,7 @@ function CalendarView() {
           </select>
           <button
             className="p-2 bg-blue-500 text-white rounded"
-            onClick={() => dispatch(clearFilters())}
+            onClick={() => dispatch(clearFilter())}
           >
             Clear Filters
           </button>
