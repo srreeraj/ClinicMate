@@ -13,7 +13,7 @@ function AppointmentList({ appointments, onEdit }) {
             onClick={() => onEdit(appointment)}
           >
             <p className="text-sm">
-              {appointment.time} - {data.patients.find((p) => p.id === app.patientId)?.name} with{' '}
+              {appointment.time} - {data.patients.find((p) => p.id === appointment.patientId)?.name} with{' '}
               {data.doctors.find((d) => d.id === appointment.doctorId)?.name}
             </p>
           </div>
