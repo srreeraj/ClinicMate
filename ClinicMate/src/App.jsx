@@ -11,8 +11,6 @@ function App() {
   return (
     <div className={isDarkMode ? 'dark' : ''}>
       <Navbar/>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
-        <div className="container mx-auto p-4">
           <Routes>
             <Route
               path="/"
@@ -28,8 +26,6 @@ function App() {
             />
           </Routes>
         </div>
-      </div>
-    </div>
   )
 }
 
