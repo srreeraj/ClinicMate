@@ -24,7 +24,7 @@ const LoginPage = () => {
   
   return (
     <Box sx={{ 
-      minHeight: '90vh', 
+      minHeight: '100vh', 
       background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
       display: 'flex',
       alignItems: 'center',
@@ -78,6 +78,7 @@ const LoginPage = () => {
                 sx={{ 
                   mb: 3,
                   '& .MuiOutlinedInput-root': {
+                    color : 'black',
                     '& fieldset': {
                       borderColor: '#e0e6ed',
                       borderWidth: 2
@@ -102,6 +103,7 @@ const LoginPage = () => {
                 sx={{ 
                   mb: 2,
                   '& .MuiOutlinedInput-root': {
+                    color : 'black',
                     '& fieldset': {
                       borderColor: '#e0e6ed',
                       borderWidth: 2
@@ -133,9 +135,9 @@ const LoginPage = () => {
                   fontWeight: 600,
                   textTransform: 'none',
                   borderRadius: 2,
-                  background: 'linear-gradient(45deg, #4a90e2, #357abd)',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   '&:hover': {
-                    background: 'linear-gradient(45deg, #357abd, #2e6da4)'
+                    background: 'linear-gradient(135deg, #667eea 0%, #4b3067ff 100%)'
                   },
                   '&:disabled': {
                     background: '#bdc3c7'
