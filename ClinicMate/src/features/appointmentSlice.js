@@ -5,33 +5,33 @@ const loadAppointments = () => {
     return data ? JSON.parse(data) : []
 }
 
-const saveAppointements = (appointements) => {
+const saveAppointments = (appointements) => {
     localStorage.setItem('appointments', JSON.stringify(appointements))
 }
 
-const appointementSlice = createSlice({
+const appointmentSlice = createSlice({
     name : 'appointments',
     initialState : {
-        appointements : loadAppointments(),
+        appointments : loadAppointments(),
     },
     reducers : {
         addAppointment : (state , action) => {
-            state.appointements.push(action.payload)
-            saveAppointements(state.appointements)
+            state.appointments.push(action.payload)
+            saveAppointments(state.appointments)
         },
         updateAppointment : (state, action) => {
-            const index = state.appointements.findIndex(app => app.id === action.payload.id)
+            const index = state.appointments.findIndex(app => app.id === action.payload.id)
             if(index !== -1) {
-                state.appointements[index] = action.payload
-                saveAppointements(state.appointements)
+                state.appointments[index] = action.payload
+                saveAppointments(state.appointments)
             }
         },
         deleteAppointment : (state, action) => {
-            state.appointements = state.appointements.filter(app => app.id !== action.payload)
-            saveAppointements(state.appointements)
+            state.appointments = state.appointments.filter(app => app.id !== action.payload)
+            saveAppointments(state.appointments)
         },
     },
 })
 
-export const { addAppointment, updateAppointment, deleteAppointment } = appointementSlice.actions;
-export default appointementSlice.reducer;
+export const { addAppointment, updateAppointment, deleteAppointment } = appointmentSlice.actions;
+export default appointmentSlice.reducer;
