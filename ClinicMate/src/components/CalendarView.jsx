@@ -32,6 +32,12 @@ function CalendarView() {
   })
 
   const openForm = (date, appointment = null) => {
+    // Check if trying to create appointment on past date
+    const isPastDate = date < today && !isSameDay(date, today)
+    if (isPastDate && !appointment) {
+      return // Don't open form for new appointments on past dates
+    }
+    
     setSelectedDate(date)
     setEditAppointment(appointment)
     setIsFormOpen(true)
@@ -156,6 +162,23 @@ function CalendarView() {
 
           <div className={baseClasses.card}>
             <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className={`text-lg font-semibold ${baseClasses.text.primary}`}>
+                  Appointments for {format(selectedDate, 'MMM d, yyyy')}
+                </h3>
+                {/* Only show New button if selected date is not in the past */}
+                {(!selectedDate || selectedDate >= today || isSameDay(selectedDate, today)) && (
+                  <button
+                    className={baseClasses.button.primary}
+                    onClick={() => openForm(selectedDate)}
+                  >
+                    <svg className="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    New
+                  </button>
+                )}
+              </div>
               <AppointmentList
                 appointments={filteredAppointments}
                 onEdit={(appointment) => openForm(selectedDate, appointment)}
@@ -244,30 +267,45 @@ function CalendarView() {
                   const isToday = isSameDay(day, today)
                   const isSelected = isSameDay(day, selectedDate)
                   const isCurrentMonth = isSameMonth(day, today)
+                  const isPastDate = day < today && !isToday
+                  const isClickable = isCurrentMonth && !isPastDate
                   
                   return (
                     <div
                       key={day}
                       className={`
-                        h-24 p-2 cursor-pointer border transition-colors duration-200
-                        ${isCurrentMonth ? 'hover:bg-opacity-50' : 'opacity-50 cursor-not-allowed'}
-                        ${isToday 
-                          ? isDarkMode 
-                            ? 'bg-blue-900 border-blue-700' 
-                            : 'bg-blue-50 border-blue-200'
-                          : isSelected
-                          ? isDarkMode
-                            ? 'bg-gray-700 border-gray-600'
-                            : 'bg-gray-100 border-gray-300'
-                          : isDarkMode
-                          ? 'bg-gray-800 border-gray-700 hover:bg-gray-700'
-                          : 'bg-white border-gray-200 hover:bg-gray-50'
+                        h-24 p-2 border transition-colors duration-200
+                        ${!isCurrentMonth 
+                          ? 'opacity-30 cursor-not-allowed' 
+                          : isPastDate
+                          ? `opacity-60 cursor-not-allowed ${
+                              isDarkMode 
+                                ? 'bg-gray-900 border-gray-800 text-gray-600' 
+                                : 'bg-gray-50 border-gray-300 text-gray-400'
+                            }`
+                          : `cursor-pointer ${
+                              isToday 
+                                ? isDarkMode 
+                                  ? 'bg-blue-900 border-blue-700' 
+                                  : 'bg-blue-50 border-blue-200'
+                                : isSelected
+                                ? isDarkMode
+                                  ? 'bg-gray-700 border-gray-600'
+                                  : 'bg-gray-100 border-gray-300'
+                                : isDarkMode
+                                ? 'bg-gray-800 border-gray-700 hover:bg-gray-700'
+                                : 'bg-white border-gray-200 hover:bg-gray-50'
+                            }`
                         }
                       `}
-                      onClick={() => isCurrentMonth && openForm(day)}
+                      onClick={() => isClickable && openForm(day)}
                     >
                       <div className={`text-sm font-medium mb-1 ${
-                        isToday 
+                        !isCurrentMonth
+                          ? 'text-gray-400'
+                          : isPastDate
+                          ? isDarkMode ? 'text-gray-600' : 'text-gray-400'
+                          : isToday 
                           ? isDarkMode ? 'text-blue-300' : 'text-blue-700'
                           : baseClasses.text.primary
                       }`}>
@@ -279,14 +317,22 @@ function CalendarView() {
                         {dayAppointments.slice(0, 2).map((app) => (
                           <div
                             key={app.id}
-                            className={`text-xs p-1 rounded cursor-pointer transition-colors duration-150 ${
-                              isDarkMode
-                                ? 'bg-blue-700 text-blue-100 hover:bg-blue-600'
-                                : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                            className={`text-xs p-1 rounded transition-colors duration-150 ${
+                              isPastDate
+                                ? `cursor-default ${
+                                    isDarkMode
+                                      ? 'bg-gray-800 text-gray-500'
+                                      : 'bg-gray-200 text-gray-500'
+                                  }`
+                                : `cursor-pointer ${
+                                    isDarkMode
+                                      ? 'bg-blue-700 text-blue-100 hover:bg-blue-600'
+                                      : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                                  }`
                             }`}
                             onClick={(e) => {
                               e.stopPropagation()
-                              openForm(day, app)
+                              if (!isPastDate) openForm(day, app)
                             }}
                           >
                             <div className="font-medium">{app.time}</div>
