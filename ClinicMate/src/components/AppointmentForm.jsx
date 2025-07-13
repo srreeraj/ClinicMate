@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { TextField, Select, MenuItem, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import data from '../assets/data.json'
 
-const AppointmentForm = (date, appointment, onClose ) => {
+const AppointmentForm = ({date, appointment, onClose }) => {
   const dispatch = useDispatch()
   const [patientId, setPatientId] = useState(appointment?.patientId || '')
   const [doctorId , setDoctorId] = useState(appointment?.doctorId || '')
