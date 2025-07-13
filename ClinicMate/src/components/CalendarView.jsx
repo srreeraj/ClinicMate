@@ -32,10 +32,9 @@ function CalendarView() {
   })
 
   const openForm = (date, appointment = null) => {
-    // Check if trying to create appointment on past date
     const isPastDate = date < today && !isSameDay(date, today)
     if (isPastDate && !appointment) {
-      return // Don't open form for new appointments on past dates
+      return
     }
     
     setSelectedDate(date)
@@ -43,7 +42,6 @@ function CalendarView() {
     setIsFormOpen(true)
   }
 
-  // Base classes for light and dark modes
   const baseClasses = {
     container: `min-h-screen transition-colors duration-300 ${
       isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
@@ -74,7 +72,43 @@ function CalendarView() {
       isDarkMode
         ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
         : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-    }`
+    }`,
+    // Add appointment list specific styles
+    appointmentList: {
+      container: `transition-colors duration-300 ${
+        isDarkMode ? 'bg-gray-800' : 'bg-white'
+      }`,
+      item: `p-4 border-b transition-colors duration-300 ${
+        isDarkMode 
+          ? 'border-gray-700 hover:bg-gray-700' 
+          : 'border-gray-200 hover:bg-gray-50'
+      }`,
+      itemLast: `p-4 transition-colors duration-300 ${
+        isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+      }`,
+      text: {
+        primary: isDarkMode ? 'text-gray-100' : 'text-gray-900',
+        secondary: isDarkMode ? 'text-gray-400' : 'text-gray-600',
+        accent: isDarkMode ? 'text-blue-400' : 'text-blue-600'
+      },
+      badge: {
+        success: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+          isDarkMode
+            ? 'bg-green-900 text-green-300'
+            : 'bg-green-100 text-green-800'
+        }`,
+        warning: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+          isDarkMode
+            ? 'bg-yellow-900 text-yellow-300'
+            : 'bg-yellow-100 text-yellow-800'
+        }`,
+        error: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+          isDarkMode
+            ? 'bg-red-900 text-red-300'
+            : 'bg-red-100 text-red-800'
+        }`
+      }
+    }
   }
 
   return (
@@ -160,13 +194,13 @@ function CalendarView() {
             </div>
           </div>
 
+          {/* Appointment List Section */}
           <div className={baseClasses.card}>
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
                 <h3 className={`text-lg font-semibold ${baseClasses.text.primary}`}>
                   Appointments for {format(selectedDate, 'MMM d, yyyy')}
                 </h3>
-                {/* Only show New button if selected date is not in the past */}
                 {(!selectedDate || selectedDate >= today || isSameDay(selectedDate, today)) && (
                   <button
                     className={baseClasses.button.primary}
@@ -182,6 +216,8 @@ function CalendarView() {
               <AppointmentList
                 appointments={filteredAppointments}
                 onEdit={(appointment) => openForm(selectedDate, appointment)}
+                isDarkMode={isDarkMode}
+                baseClasses={baseClasses}
               />
             </div>
           </div>
@@ -254,16 +290,11 @@ function CalendarView() {
               
               {/* Calendar Days */}
               <div className="grid grid-cols-7 gap-1">
-                {/* Empty cells for days before month start */}
                 {Array(firstDayIndex).fill().map((_, i) => (
                   <div key={`empty-${i}`} className="h-24"></div>
                 ))}
                 
-                {/* Calendar days */}
                 {days.map((day) => {
-                  const dayAppointments = appointments.filter((app) =>
-                    isSameDay(new Date(app.date), day)
-                  )
                   const isToday = isSameDay(day, today)
                   const isSelected = isSameDay(day, selectedDate)
                   const isCurrentMonth = isSameMonth(day, today)
@@ -311,46 +342,38 @@ function CalendarView() {
                       }`}>
                         {format(day, 'd')}
                       </div>
-                      
-                      {/* Appointments */}
-                      <div className="space-y-1 overflow-y-auto max-h-16">
-                        {dayAppointments.slice(0, 2).map((app) => (
-                          <div
-                            key={app.id}
-                            className={`text-xs p-1 rounded transition-colors duration-150 ${
-                              isPastDate
-                                ? `cursor-default ${
-                                    isDarkMode
-                                      ? 'bg-gray-800 text-gray-500'
-                                      : 'bg-gray-200 text-gray-500'
-                                  }`
-                                : `cursor-pointer ${
-                                    isDarkMode
-                                      ? 'bg-blue-700 text-blue-100 hover:bg-blue-600'
-                                      : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
-                                  }`
-                            }`}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              if (!isPastDate) openForm(day, app)
-                            }}
-                          >
-                            <div className="font-medium">{app.time}</div>
-                            <div className="truncate">
-                              {data.patients.find((p) => p.id === app.patientId)?.name}
-                            </div>
-                          </div>
-                        ))}
-                        {dayAppointments.length > 2 && (
-                          <div className={`text-xs ${baseClasses.text.muted} text-center`}>
-                            +{dayAppointments.length - 2} more
-                          </div>
-                        )}
-                      </div>
                     </div>
                   )
                 })}
               </div>
+            </div>
+          </div>
+
+          {/* Appointment List Section */}
+          <div className={`${baseClasses.card} mt-6`}>
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className={`text-lg font-semibold ${baseClasses.text.primary}`}>
+                  Appointments for {format(selectedDate, 'MMM d, yyyy')}
+                </h3>
+                {(!selectedDate || selectedDate >= today || isSameDay(selectedDate, today)) && (
+                  <button
+                    className={baseClasses.button.primary}
+                    onClick={() => openForm(selectedDate)}
+                  >
+                    <svg className="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    New
+                  </button>
+                )}
+              </div>
+              <AppointmentList
+                appointments={filteredAppointments}
+                onEdit={(appointment) => openForm(selectedDate, appointment)}
+                isDarkMode={isDarkMode}
+                baseClasses={baseClasses}
+              />
             </div>
           </div>
         </div>
@@ -366,6 +389,8 @@ function CalendarView() {
                   setIsFormOpen(false)
                   setEditAppointment(null)
                 }}
+                isDarkMode={isDarkMode}
+                baseClasses={baseClasses}
               />
             </div>
           </div>
